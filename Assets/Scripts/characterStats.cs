@@ -15,10 +15,19 @@ public class characterStats : MonoBehaviour
 
     public Slider healthBar;
     public TextMeshPro healthText;
+
+    //새로 추가 되는 변수
+    public int maxMana = 10;
+    public int currentMana;   //현재 마나
+    public Slider manaBar;   //마나 바
+    public TextMeshPro manaText;  //마나 텍스트
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentMana = maxMana;
+        UpdateUI();
     }
 
    public void TakeDamage(int damage)
@@ -29,5 +38,48 @@ public class characterStats : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth += amount;
+    }
+
+    public void UseMana(int amount)
+    {
+        currentMana -= amount;
+        if(currentMana < 0)
+        {
+            currentMana = 0;
+        }
+        UpdateUI();
+    }
+
+    public void GainMana(int amount)
+    {
+        currentMana += amount;
+        if(currentMana > maxMana)
+        {
+            currentMana = maxMana;
+        }
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if(healthBar != null)
+        {
+            healthBar.value = (float)currentHealth / maxHealth;
+        }
+
+        if(healthText != null)
+        {
+            healthText.text = $"{currentHealth} / {maxHealth}";
+        }
+
+        if(manaBar != null)
+        {
+            manaBar.value = (float)currentMana / maxMana;
+        }
+
+        if(manaText != null)
+        {
+            manaText.text = $"{currentMana} / {maxMana}";
+        }
     }
 }
